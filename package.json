@@ -1,15 +1,24 @@
 {
 	"name": "acquire-feeds",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "The acquire-feeds package enables projects to trigger and run Acquire supplier feeds, including CSV conversion. Use acquire-ftp to upload to FTP if required.",
+	"author": "Geoff Talbot",
+	"license": "MIT",
 	"main": "build/index.js",
+	"types": "build/index.d.ts",
 	"scripts": {
 		"test": "jest",
 		"build": "tsc",
 		"prepare": "npm run build"
 	},
-	"author": "Geoff Talbot",
-	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/acquire-global/acquire-feeds.git"
+	},
+	"bugs": {
+		"url": "https://github.com/acquire-global/acquire-feeds/issues"
+	},
+	"homepage": "https://github.com/acquire-global/acquire-feeds#readme",
 	"devDependencies": {
 		"@types/jest": "^29.5.0",
 		"@types/node": "^18.15.11",
