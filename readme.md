@@ -64,6 +64,6 @@ ftp.uploadFeed({
 ## Supplier definitions
 
 Suppliers are defined in the [suppliers](src/suppliers) folder.
-See [shared.ts](src/suppliers/shared.ts#L14) for the Supplier class definition.
+See [index.ts](src/suppliers/index.ts#L16) in that folder for the Supplier class definition.
 
 In addition to a name and code, each supplier needs a function to fetch its data (e.g. scraper/API) and a function to map its products onto the [AcquireProduct](src/index.ts#L8) interface.
