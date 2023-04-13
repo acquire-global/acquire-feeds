@@ -1,5 +1,3 @@
-import westan from './westan'
-
 import { AcquireProduct } from '..'
 
 type ProductMapper<SupplierProduct> = (
@@ -46,5 +44,7 @@ export class Supplier<SupplierProduct> {
 		return feed.map(this.mapProduct)
 	}
 }
+
+import westan from './westan'
 
 export default { westan }
