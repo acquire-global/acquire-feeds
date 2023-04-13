@@ -7,9 +7,20 @@ function escapeString(str: string) {
 }
 
 type BasicType = string | number | boolean
+type SimpleObjectOfType<T> = Partial<
+	Record<keyof T, BasicType | null | undefined>
+>
+
+function isBasicType(item: unknown): item is BasicType {
+	return (
+		typeof item === 'string' ||
+		typeof item === 'number' ||
+		typeof item === 'boolean'
+	)
+}
 
 export default function convertToCsv<
-	ItemType extends BasicType | Record<string, BasicType | null>
+	ItemType extends BasicType | SimpleObjectOfType<ItemType>
 >(items: ItemType[]): string {
 	// Handle empty array
 	if (items.length === 0) {
@@ -17,12 +28,18 @@ export default function convertToCsv<
 	}
 
 	// Handle array of primitive values
-	if (items.every((item) => typeof item !== 'object')) {
+	if (items.every((item) => isBasicType(item))) {
 		return items.join('\n')
 	}
 
-	// Ensure items are all objects
-	if (items.every((item) => typeof item === 'object')) {
+	// Ensure items are all objects with identical keys
+	if (
+		items.every(
+			(item) =>
+				typeof item === 'object' &&
+				Object.keys(item).every((key) => Object.keys(items[0]).includes(key))
+		)
+	) {
 		let csv = Object.keys(items[0]).map(escapeString).join(',')
 		items.forEach((item) => {
 			csv +=
