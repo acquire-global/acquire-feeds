@@ -1,6 +1,6 @@
 {
 	"name": "acquire-feeds",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "The acquire-feeds package enables projects to trigger and run Acquire supplier feeds, including CSV conversion. Use acquire-ftp to upload to FTP if required.",
 	"author": "Geoff Talbot",
 	"license": "MIT",

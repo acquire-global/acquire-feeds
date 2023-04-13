@@ -1,4 +1,5 @@
 import convertToCsv, { Errors } from '.'
+import { AcquireProduct } from '..'
 
 describe('convertToCsv', () => {
 	test(`[] should return ''`, () => {
@@ -45,5 +46,30 @@ describe('convertToCsv', () => {
 
 	it('should escape double quotes in headers', () => {
 		expect(convertToCsv([{ 'double"quote': 1 }])).toEqual(`"double""quote"\n1`)
+	})
+
+	it('should accept an AcquireProduct array', () => {
+		const acquireProduct: AcquireProduct = {
+			brand: 'brand',
+			manufacturerCode: 'manufacturerCode',
+			name: 'name',
+			buy: 'buy',
+			stock: 'stock',
+			rrp: 'rrp',
+			description: 'description',
+		}
+		expect(convertToCsv([acquireProduct])).toEqual(
+			`"brand","manufacturerCode","name","buy","stock","rrp","description"\n"brand","manufacturerCode","name","buy","stock","rrp","description"`
+		)
+	})
+
+	it('should throw an error when given an array of objects with different optional keys', () => {
+		type OptionalKeys = { a: number; b?: number; c?: number }
+		const testArray = [
+			{ a: 1, b: 2 },
+			{ a: 3, c: 4 },
+		] as OptionalKeys[]
+
+		expect(() => convertToCsv(testArray)).toThrowError(Errors.INVALID_TYPES)
 	})
 })
