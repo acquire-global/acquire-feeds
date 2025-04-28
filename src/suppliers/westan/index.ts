@@ -119,33 +119,39 @@ async function fetchData(offset = 0, limit = 100) {
 			language: 'en',
 		},
 	})
-
-	await axiosClient
-		.post<LoginDetails | ErrorResponse>(
-			'https://www.westan.net.nz/app/services/Account.Login.Service.ss?n=2&c=3741511',
-			{
-				email: westanEmail,
-				password: westanPassword,
-			}
-		)
-		.then((loginResult) => {
-			if (loginResult.status !== 200) {
-				throw new Error(
-					`Westan login failed with status code ${loginResult.status}`
-				)
-			}
-			const data = loginResult.data
-			if (isErrorResponse(data)) {
-				throw new Error(data.errorMessage)
-			}
-			const [cookie] = loginResult.headers['set-cookie']!
-			axiosClient.defaults.headers.common = { Cookie: cookie }
-			console.log(`Logged in to Westan as ${data.user.email}`)
-		})
-		.catch((error) => {
-			console.log(error)
-			return []
-		})
+	try {
+		await axiosClient
+			.post<LoginDetails | ErrorResponse>(
+				'https://www.westan.net.nz/app/services/Account.Login.Service.ss?n=2&c=3741511',
+				{
+					email: westanEmail,
+					password: westanPassword,
+				},
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						'X-Requested-With': 'XMLHttpRequest',
+					},
+				}
+			)
+			.then((loginResult) => {
+				if (loginResult.status !== 200) {
+					throw new Error(
+						`Westan login failed with status code ${loginResult.status}`
+					)
+				}
+				const data = loginResult.data
+				if (isErrorResponse(data)) {
+					throw new Error(data.errorMessage)
+				}
+				const [cookie] = loginResult.headers['set-cookie']!
+				axiosClient.defaults.headers.common = { Cookie: cookie }
+				console.log(`Logged in to Westan as ${data.user.email}`)
+			})
+	} catch (error) {
+		console.log(error)
+		return []
+	}
 
 	let items = [] as WestanProduct[]
 	let more = true
